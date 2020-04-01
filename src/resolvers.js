@@ -1,9 +1,7 @@
 module.exports = {
-  
-  Query: {
-    products: async (_, __, { dataSources }) =>
-      dataSources.productAPI.getAllProducts(),
-    product: async (_, { id }, { dataSources }) =>
-      dataSources.productAPI.getProductById(id)
-  }
+	Product: {
+		__resolveReference(product, { dataSources }) {
+			return dataSources.productAPI.getProductById(product.id)
+		}
+	}
 };
