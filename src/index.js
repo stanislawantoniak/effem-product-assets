@@ -4,14 +4,24 @@ const resolvers = require('./resolvers');
 
 const ProductAPI = require('./datasources/product');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
+const { buildFederatedSchema } = require('@apollo/federation');
+
+const schema = buildFederatedSchema([{
+		typeDefs,
+		resolvers
+	}]);
+
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+	schema: schema,
   dataSources: () => ({
     productAPI: new ProductAPI()
   }),
   engine: {
-    apiKey: "service:"+process.env.GQL_SCHEMA_NAME+":"+process.env.ENGINE_API_KEY
+		apiKey: process.env.AGM_API_KEY,
+		schemaTag: process.env.AGM_SCHEMA_TAG
   }
 });
 
