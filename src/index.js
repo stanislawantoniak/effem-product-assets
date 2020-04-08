@@ -14,17 +14,15 @@ const schema = buildFederatedSchema([{
 		resolvers
 	}]);
 
+const api = new ProductAPI()
+
 const server = new ApolloServer({
 	schema: schema,
   dataSources: () => ({
-    productAPI: new ProductAPI()
-  }),
-  engine: {
-		apiKey: process.env.AGM_API_KEY,
-		schemaTag: process.env.AGM_SCHEMA_TAG
-  }
+    productAPI: api
+  })
 });
-
+ 
 server.listen({ port: process.env.PORT || 4001 }).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 });
